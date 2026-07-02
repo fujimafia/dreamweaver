@@ -52,7 +52,11 @@ Pattern  ──has 0-m──▶  Garment
 - Photos
 - Can be designated as a gift (recipient color/fit preferences) or listed for sale (Etsy/web copy, measurements, care instructions)
 
-**Yarn** — fiber content (wool, cotton, linen, modal — user avoids acrylic and mohair near skin), weight/gauge, yardage per skein, availability/price. Two yarns can be held together to adjust gauge or add texture.
+**Yarn** — users can CRUD Yarn and add it to one or more Projects. Tracks:
+- Fiber content (wool, cotton, linen, modal — user avoids acrylic and mohair near skin)
+- Weight/gauge, yardage per skein, availability/price
+- Usage tracking: yardage consumed per Project (total used vs. total purchased)
+- Two yarns can be held together in a Project to adjust gauge or add texture
 
 **Inspiration** *(Phase 2)* — moodboard entries: fashion brand reference images, color palette ideas, potential yarn options. Supports "I want to make something like this but in a different color/material."
 
