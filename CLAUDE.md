@@ -63,6 +63,14 @@ Pattern  ──has 0-m──▶  Garment
 
 **Inspiration** *(Phase 2)* — moodboard entries: fashion brand reference images, color palette ideas, potential yarn options. Supports "I want to make something like this but in a different color/material."
 
+## Planner
+
+A calendar or Gantt view for visualizing project timelines.
+
+- **In Progress** projects always appear on the Planner
+- **Planned** projects appear on the Planner only if they have a date assigned
+- Supports two views: calendar and Gantt
+
 ## Timer & Time Tracking
 
 A built-in timer records knitting sessions and attributes them to a Project.
