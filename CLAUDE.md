@@ -72,6 +72,11 @@ A built-in timer records knitting sessions and attributes them to a Project.
 - A Project accumulates all its time entries so the user can see total hours spent
 - Informs future project planning (e.g. "this sweater took 40 hours over 6 months")
 
+While the timer is active, a **round counter** is available:
+- Increment (+) or decrement (−) to track each round knitted
+- Round count is attributed to a Project and accumulates across sessions
+- Counter only resets when the user explicitly chooses to reset it (not on timer stop)
+
 ## Key User Workflows
 
 1. **Pattern discovery → project planning**: browse saved patterns, assess skill requirements and yarn needs, create a project with sourced yarn
