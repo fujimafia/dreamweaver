@@ -10,27 +10,29 @@ The core problem: managing a growing collection of patterns (Etsy PDFs, free dow
 
 ## Domain Model
 
-**Pattern** — a knitting instruction set. Has source (Etsy, free PDF, physical book), required skills (cable, lace, brioche, etc.), and calls for a specific yarn with gauge and yardage. Patterns may be unstarted due to skill gap or yarn sourcing difficulty.
+The five core entities are: **Inspiration, Project, Pattern, Garment, Yarn.**
 
-**Yarn** — has fiber content (wool, cotton, linen, modal, acrylic — user avoids acrylic and mohair), weight/gauge, yardage per skein, and availability/price. Yarn substitution is a core workflow: matching gauge, yardage, and texture. Two yarns can be held together to adjust gauge or add texture.
+**Inspiration** — a moodboard entry. Fashion brand images, color palette ideas, potential yarn options gathered before a project is committed. Supports "I want to make something like this but in a different color/material."
 
-**Yarn Sample (Swatch)** — a 10×10cm knitted test piece. Records needle size, yarn used, pattern used, yardage consumed, and a photo. Swatches validate gauge and fabric feel before committing to a full project. Should be linkable to the finished garment that resulted from it.
+**Pattern** — a knitting instruction set. Has source (Etsy, free PDF, physical book), required skills (cable, lace, brioche, etc.), and calls for a specific yarn with gauge and yardage. Patterns may be unstarted due to skill gap or yarn sourcing difficulty. A Pattern contains **Samples**.
+
+- **Sample** — a subset of Project (not a Garment). A 10×10cm knitted swatch that records needle size, yarn used, tension/gauge, and a photo. Used to validate yarn+pattern compatibility before committing to a full project. A Sample terminates here — it never becomes a Garment.
 
 **Project** — links a Pattern + Yarn(s) + intent. Has:
 - Status: inspiration / planned / in progress / finished / frogged (unraveled)
 - Priority influenced by seasonality (e.g. sweater needed by end of summer to wear in winter)
 - Time tracking (hours logged per session) — useful for future project planning
 - Notes on process decisions (e.g. held two yarns together, adjusted needle size)
+- A Project may produce either a **Garment** or a **Sample**, not both
 
-**Finished Garment** — a completed project becomes a product. Records:
+**Garment** — a finished Project that becomes a wearable product. Records:
 - Pre- and post-blocking/wash measurements
 - Care instructions derived from fiber content (handwash flat dry vs. machine gentle)
 - Process notes (e.g. intentionally machine washed to shrink)
 - Photos
+- Can be designated as a gift (recipient preferences: color, fit) or listed for sale (Etsy/web listing copy, measurements, care instructions)
 
-**Moodboard / Inspiration** — fashion brand images, color palette ideas, potential yarn options gathered before a project is committed. Supports "I want to make something like this but in a different color/material."
-
-**Gift / Listing** — a finished garment can be designated as a gift (with recipient preferences: color, fit) or listed for sale (Etsy listing copy, measurements, care instructions, photos).
+**Yarn** — has fiber content (wool, cotton, linen, modal — user avoids acrylic and mohair), weight/gauge, yardage per skein, and availability/price. Yarn substitution is a core workflow: matching gauge, yardage, and texture. Two yarns can be held together to adjust gauge or add texture.
 
 ## Key User Workflows
 
