@@ -33,8 +33,9 @@ Pattern  ──has 0-m──▶  Garment
 
 ### Entity details
 
-**Project** — the unit of active work. Links a Pattern + Yarn(s). Has:
-- Status: planned / in progress / finished / frogged (unraveled)
+**Project** — the unit of active work. Users can CRUD a Project and link Yarn(s) to it. Has:
+- Status (ordered): **Planned → In Progress → Completed → Ready to Wear**
+- Transitioning to "Ready to Wear" promotes the Project into a Garment
 - Priority influenced by seasonality (e.g. sweater needed by end of summer)
 - Time tracking (hours logged per session)
 - Process notes (e.g. held two yarns together, adjusted needle size)
