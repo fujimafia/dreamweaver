@@ -63,6 +63,15 @@ Pattern  ──has 0-m──▶  Garment
 
 **Inspiration** *(Phase 2)* — moodboard entries: fashion brand reference images, color palette ideas, potential yarn options. Supports "I want to make something like this but in a different color/material."
 
+## Timer & Time Tracking
+
+A built-in timer records knitting sessions and attributes them to a Project.
+
+- Start/stop timer; time is recorded in minute increments
+- Stopping the timer saves the session duration as a time entry linked to a Project
+- A Project accumulates all its time entries so the user can see total hours spent
+- Informs future project planning (e.g. "this sweater took 40 hours over 6 months")
+
 ## Key User Workflows
 
 1. **Pattern discovery → project planning**: browse saved patterns, assess skill requirements and yarn needs, create a project with sourced yarn
