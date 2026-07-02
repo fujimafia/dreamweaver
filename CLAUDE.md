@@ -41,7 +41,10 @@ Pattern  ──has 0-m──▶  Garment
 - Process notes (e.g. held two yarns together, adjusted needle size)
 - Produces 0 or 1 Garment (a Sample project produces no Garment)
 
-**Pattern** — a knitting instruction set. Source: Etsy, free PDF, physical book. Records required skills (cable, lace, brioche, etc.) and called-for yarn specs. Contains **Samples**.
+**Pattern** — users can CRUD a Pattern by uploading a PDF; the PDF is converted to editable text so the user can annotate and modify it. Source: Etsy, free PDF, physical book. Records required skills (cable, lace, brioche, etc.) and called-for yarn specs.
+- Users can add Yarn(s) to a Pattern
+- Users can substitute a Pattern's called-for yarn with an existing Yarn in their stash — adjusting and modifying the pattern instructions accordingly
+- Contains **Samples**
 
 - **Sample** — a 10×10cm swatch, a subset of Project. Records needle size, yarn, tension/gauge, and photo. Validates yarn+pattern fit before committing. Never becomes a Garment.
 
