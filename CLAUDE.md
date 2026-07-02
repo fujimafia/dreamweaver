@@ -10,29 +10,50 @@ The core problem: managing a growing collection of patterns (Etsy PDFs, free dow
 
 ## Domain Model
 
-The five core entities are: **Inspiration, Project, Pattern, Garment, Yarn.**
+Phase 1 entities: **Project, Pattern, Garment, Yarn.**
+Phase 2 entity: **Inspiration** (moodboard — not in initial build).
 
-**Inspiration** — a moodboard entry. Fashion brand images, color palette ideas, potential yarn options gathered before a project is committed. Supports "I want to make something like this but in a different color/material."
+### Relationships (from system diagram)
 
-**Pattern** — a knitting instruction set. Has source (Etsy, free PDF, physical book), required skills (cable, lace, brioche, etc.), and calls for a specific yarn with gauge and yardage. Patterns may be unstarted due to skill gap or yarn sourcing difficulty. A Pattern contains **Samples**.
+```
+Project  ──has 1-m──▶  Yarn
+Project  ──has 0-1──▶  Garment
+Project  ◀──has 0-m──  Pattern   (a pattern can have 0 or more projects)
 
-- **Sample** — a subset of Project (not a Garment). A 10×10cm knitted swatch that records needle size, yarn used, tension/gauge, and a photo. Used to validate yarn+pattern compatibility before committing to a full project. A Sample terminates here — it never becomes a Garment.
+Garment  ──has 1 ───▶  Project   (a garment belongs to exactly 1 project)
+Garment  ──has 1-m──▶  Yarn
+Garment  ──has 1-m──▶  Pattern
 
-**Project** — links a Pattern + Yarn(s) + intent. Has:
-- Status: inspiration / planned / in progress / finished / frogged (unraveled)
-- Priority influenced by seasonality (e.g. sweater needed by end of summer to wear in winter)
-- Time tracking (hours logged per session) — useful for future project planning
-- Notes on process decisions (e.g. held two yarns together, adjusted needle size)
-- A Project may produce either a **Garment** or a **Sample**, not both
+Yarn     ──has 0-m──▶  Pattern
+Yarn     ──has 0-m──▶  Garment
+
+Pattern  ──has 1-m──▶  Yarn
+Pattern  ──has 0-m──▶  Garment
+```
+
+### Entity details
+
+**Project** — the unit of active work. Links a Pattern + Yarn(s). Has:
+- Status: planned / in progress / finished / frogged (unraveled)
+- Priority influenced by seasonality (e.g. sweater needed by end of summer)
+- Time tracking (hours logged per session)
+- Process notes (e.g. held two yarns together, adjusted needle size)
+- Produces 0 or 1 Garment (a Sample project produces no Garment)
+
+**Pattern** — a knitting instruction set. Source: Etsy, free PDF, physical book. Records required skills (cable, lace, brioche, etc.) and called-for yarn specs. Contains **Samples**.
+
+- **Sample** — a 10×10cm swatch, a subset of Project. Records needle size, yarn, tension/gauge, and photo. Validates yarn+pattern fit before committing. Never becomes a Garment.
 
 **Garment** — a finished Project that becomes a wearable product. Records:
 - Pre- and post-blocking/wash measurements
-- Care instructions derived from fiber content (handwash flat dry vs. machine gentle)
-- Process notes (e.g. intentionally machine washed to shrink)
+- Care instructions (derived from fiber content: handwash/flat dry vs. machine gentle)
+- Process notes
 - Photos
-- Can be designated as a gift (recipient preferences: color, fit) or listed for sale (Etsy/web listing copy, measurements, care instructions)
+- Can be designated as a gift (recipient color/fit preferences) or listed for sale (Etsy/web copy, measurements, care instructions)
 
-**Yarn** — has fiber content (wool, cotton, linen, modal — user avoids acrylic and mohair), weight/gauge, yardage per skein, and availability/price. Yarn substitution is a core workflow: matching gauge, yardage, and texture. Two yarns can be held together to adjust gauge or add texture.
+**Yarn** — fiber content (wool, cotton, linen, modal — user avoids acrylic and mohair near skin), weight/gauge, yardage per skein, availability/price. Two yarns can be held together to adjust gauge or add texture.
+
+**Inspiration** *(Phase 2)* — moodboard entries: fashion brand reference images, color palette ideas, potential yarn options. Supports "I want to make something like this but in a different color/material."
 
 ## Key User Workflows
 
