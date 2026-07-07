@@ -96,4 +96,10 @@ While the timer is active, a **round counter** is available:
 
 ## Technical Decisions
 
-_To be filled in as the stack is chosen._
+**Stack:** Tauri v2 (Rust backend) + React + TypeScript frontend + SQLite via `tauri-plugin-sql`.
+
+**Database:** Single SQLite file at `dreamweaver.db` in the Tauri app data directory. Schema migrations live in `src-tauri/migrations/`. The DB layer is in `src/db/` — one file per entity (`yarns.ts`, `patterns.ts`, `projects.ts`, `garments.ts`, `samples.ts`) plus shared `types.ts`, `client.ts`, `id.ts`.
+
+**Prerequisite to run:** Rust must be installed (`curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`), then `npm install` and `npm run tauri dev`.
+
+**Tables:** `yarns`, `patterns`, `projects`, `project_yarns`, `pattern_yarns`, `time_entries`, `garments`, `samples`.
