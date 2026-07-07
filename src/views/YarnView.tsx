@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { listYarns, createYarn, updateYarn, deleteYarn } from '../db/yarns';
 import type { Yarn, CreateYarnInput, YarnWeight } from '../db/types';
 import YarnPanel from '../components/YarnPanel';
+import type { NavigateOpts } from '../App';
+import type { NavSection } from '../nav';
 
 const WEIGHT_ORDER: YarnWeight[] = ['lace','fingering','sport','dk','worsted','aran','bulky','super_bulky'];
 
@@ -24,7 +26,11 @@ function firstPhoto(yarn: Yarn): string | null {
   catch { return null; }
 }
 
-export default function YarnView() {
+interface Props {
+  onNavigate: (section: NavSection, opts?: NavigateOpts) => void;
+}
+
+export default function YarnView({ onNavigate }: Props) {
   const [yarns, setYarns]       = useState<Yarn[]>([]);
   const [selected, setSelected] = useState<Yarn | null | 'new'>(null);
   const [filterWeight, setFilterWeight] = useState<YarnWeight | ''>('');
@@ -245,6 +251,7 @@ export default function YarnView() {
           onSave={handleSave}
           onDelete={selected !== 'new' ? () => handleDelete((selected as Yarn).id) : undefined}
           onClose={() => setSelected(null)}
+          onNavigate={onNavigate}
         />
       )}
     </div>

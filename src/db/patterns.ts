@@ -51,7 +51,7 @@ export async function updatePattern(id: string, input: UpdatePatternInput): Prom
   if (input.designer !== undefined)    col('designer', input.designer);
   if (input.sourceType !== undefined)  col('source_type', input.sourceType);
   if (input.sourceUrl !== undefined)   col('source_url', input.sourceUrl);
-  if (input.pdfPath !== undefined)     col('pdf_path', input.pdfPath);
+  if ('pdfPath' in input)              col('pdf_path', input.pdfPath ?? null);
   if (input.pdfText !== undefined)     col('pdf_text', input.pdfText);
   if (input.requiredSkills !== undefined)
     col('required_skills', JSON.stringify(input.requiredSkills));
@@ -85,13 +85,15 @@ export async function deletePattern(id: string): Promise<void> {
 }
 
 export async function addYarnToPattern(
-  patternId: string, yarnId: string, isSubstitution = false, notes?: string,
+  patternId: string,
+  yarnId: string,
+  opts?: { isSubstitution?: boolean; yardage?: number; notes?: string },
 ): Promise<void> {
   const db = await getDb();
   await db.execute(
-    `INSERT OR REPLACE INTO pattern_yarns (pattern_id, yarn_id, is_substitution, notes)
-     VALUES ($1, $2, $3, $4)`,
-    [patternId, yarnId, isSubstitution ? 1 : 0, notes ?? null],
+    `INSERT OR REPLACE INTO pattern_yarns (pattern_id, yarn_id, is_substitution, yardage, notes)
+     VALUES ($1, $2, $3, $4, $5)`,
+    [patternId, yarnId, opts?.isSubstitution ? 1 : 0, opts?.yardage ?? null, opts?.notes ?? null],
   );
 }
 
@@ -100,5 +102,61 @@ export async function removeYarnFromPattern(patternId: string, yarnId: string): 
   await db.execute(
     'DELETE FROM pattern_yarns WHERE pattern_id = $1 AND yarn_id = $2',
     [patternId, yarnId],
+  );
+}
+
+// ── Yarn → Patterns (all patterns that use a given yarn) ─────────────────────
+
+export interface YarnPatternLink {
+  pattern_id: string;
+  pattern_title: string;
+  pattern_source_type: string;
+  is_substitution: number;
+}
+
+// ── Pattern → Yarns (all yarns linked to a given pattern) ────────────────────
+
+export interface PatternYarnLink {
+  yarn_id: string;
+  yarn_name: string;
+  yarn_brand: string | null;
+  yarn_weight: string;
+  is_substitution: number;
+  yardage: number | null;
+  notes: string | null;
+}
+
+export async function getYarnsForPattern(patternId: string): Promise<PatternYarnLink[]> {
+  const db = await getDb();
+  return db.select<PatternYarnLink[]>(
+    `SELECT
+       py.yarn_id,
+       y.name   AS yarn_name,
+       y.brand  AS yarn_brand,
+       y.weight AS yarn_weight,
+       py.is_substitution,
+       py.yardage,
+       py.notes
+     FROM pattern_yarns py
+     JOIN yarns y ON y.id = py.yarn_id
+     WHERE py.pattern_id = $1
+     ORDER BY y.name ASC`,
+    [patternId],
+  );
+}
+
+export async function getPatternsForYarn(yarnId: string): Promise<YarnPatternLink[]> {
+  const db = await getDb();
+  return db.select<YarnPatternLink[]>(
+    `SELECT
+       py.pattern_id,
+       p.title       AS pattern_title,
+       p.source_type AS pattern_source_type,
+       py.is_substitution
+     FROM pattern_yarns py
+     JOIN patterns p ON p.id = py.pattern_id
+     WHERE py.yarn_id = $1
+     ORDER BY p.title ASC`,
+    [yarnId],
   );
 }

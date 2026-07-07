@@ -4,3 +4,4 @@ export * from './projects';
 export * from './garments';
 export * from './samples';
 export * from './types';
+export type { YarnProjectLink } from './projects';

@@ -26,15 +26,15 @@ export async function createGarment(input: CreateGarmentInput): Promise<Garment>
   const id = newId();
   await db.execute(
     `INSERT INTO garments (
-       id, project_id,
+       id, project_id, garment_type, season,
        pre_block_chest_cm, pre_block_length_cm, pre_block_sleeve_cm,
        post_block_chest_cm, post_block_length_cm, post_block_sleeve_cm,
        care_instructions, process_notes,
        is_gift, gift_recipient, gift_notes,
        is_for_sale, listing_title, listing_description, listing_price, photos
-     ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)`,
+     ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20)`,
     [
-      id, input.projectId,
+      id, input.projectId, input.garmentType ?? null, input.season ?? null,
       input.preBlockChestCm ?? null, input.preBlockLengthCm ?? null, input.preBlockSleeveCm ?? null,
       input.postBlockChestCm ?? null, input.postBlockLengthCm ?? null, input.postBlockSleeveCm ?? null,
       input.careInstructions ?? null, input.processNotes ?? null,
@@ -58,7 +58,9 @@ export async function updateGarment(id: string, input: UpdateGarmentInput): Prom
     values.push(val ?? null);
   };
 
-  if (input.preBlockChestCm !== undefined)   col('pre_block_chest_cm', input.preBlockChestCm);
+  if (input.garmentType !== undefined)        col('garment_type', input.garmentType);
+  if (input.season !== undefined)             col('season', input.season);
+  if (input.preBlockChestCm !== undefined)    col('pre_block_chest_cm', input.preBlockChestCm);
   if (input.preBlockLengthCm !== undefined)  col('pre_block_length_cm', input.preBlockLengthCm);
   if (input.preBlockSleeveCm !== undefined)  col('pre_block_sleeve_cm', input.preBlockSleeveCm);
   if (input.postBlockChestCm !== undefined)  col('post_block_chest_cm', input.postBlockChestCm);

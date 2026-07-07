@@ -27,7 +27,7 @@ export async function createProject(input: CreateProjectInput): Promise<Project>
      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
     [
       id, input.title, input.status ?? 'planned', input.patternId ?? null,
-      input.priority ?? 0, input.targetDate ?? null, input.startDate ?? null,
+      input.priority ?? 0, null, input.startDate ?? null,
       input.processNotes ?? null, input.isSample ? 1 : 0,
       input.plannerStartDate ?? null, input.plannerEndDate ?? null,
     ],
@@ -50,7 +50,6 @@ export async function updateProject(id: string, input: UpdateProjectInput): Prom
   if (input.status !== undefined)       col('status', input.status);
   if (input.patternId !== undefined)    col('pattern_id', input.patternId);
   if (input.priority !== undefined)     col('priority', input.priority);
-  if (input.targetDate !== undefined)   col('target_date', input.targetDate);
   if (input.startDate !== undefined)    col('start_date', input.startDate);
   if (input.endDate !== undefined)      col('end_date', input.endDate);
   if (input.processNotes !== undefined) col('process_notes', input.processNotes);
@@ -109,6 +108,33 @@ export async function removeYarnFromProject(projectId: string, yarnId: string): 
   await db.execute(
     'DELETE FROM project_yarns WHERE project_id = $1 AND yarn_id = $2',
     [projectId, yarnId],
+  );
+}
+
+// ── Yarn → Projects (all projects that use a given yarn) ─────────────────────
+
+export interface YarnProjectLink {
+  project_id: string;
+  project_title: string;
+  project_status: string;
+  yardage_used: number;
+  skeins_used: number;
+}
+
+export async function getProjectsForYarn(yarnId: string): Promise<YarnProjectLink[]> {
+  const db = await getDb();
+  return db.select<YarnProjectLink[]>(
+    `SELECT
+       py.project_id,
+       p.title  AS project_title,
+       p.status AS project_status,
+       py.yardage_used,
+       py.skeins_used
+     FROM project_yarns py
+     JOIN projects p ON p.id = py.project_id
+     WHERE py.yarn_id = $1
+     ORDER BY p.created_at DESC`,
+    [yarnId],
   );
 }
 

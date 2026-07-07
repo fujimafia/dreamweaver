@@ -27,6 +27,18 @@ pub fn run() {
             sql: include_str!("../migrations/004_yarn_photos.sql"),
             kind: MigrationKind::Up,
         },
+        Migration {
+            version: 5,
+            description: "garment_type_season",
+            sql: include_str!("../migrations/005_garment_type_season.sql"),
+            kind: MigrationKind::Up,
+        },
+        Migration {
+            version: 6,
+            description: "pattern_yarn_yardage",
+            sql: include_str!("../migrations/006_pattern_yarn_yardage.sql"),
+            kind: MigrationKind::Up,
+        },
     ];
 
     tauri::Builder::default()

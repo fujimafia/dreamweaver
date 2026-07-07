@@ -6,7 +6,7 @@ export type YarnWeight =
 
 export type PatternSourceType = 'etsy' | 'free_pdf' | 'physical_book' | 'magazine';
 
-export type ProjectStatus = 'planned' | 'in_progress' | 'completed' | 'ready_to_wear';
+export type ProjectStatus = 'planned' | 'in_progress' | 'paused' | 'completed' | 'ready_to_wear';
 
 export type ColorFeature = 'Tweed' | 'Heather' | 'Variegated' | 'Solid' | 'Speckled' | 'Marled' | string;
 
@@ -101,6 +101,8 @@ export interface TimeEntry {
 export interface Garment {
   id: string;
   project_id: string;
+  garment_type: string | null;
+  season: string | null;
   pre_block_chest_cm: number | null;
   pre_block_length_cm: number | null;
   pre_block_sleeve_cm: number | null;
@@ -182,7 +184,6 @@ export interface CreateProjectInput {
   status?: ProjectStatus;
   patternId?: string;
   priority?: number;
-  targetDate?: string;
   startDate?: string;
   processNotes?: string;
   isSample?: boolean;
@@ -198,6 +199,8 @@ export interface UpdateProjectInput extends Partial<CreateProjectInput> {
 
 export interface CreateGarmentInput {
   projectId: string;
+  garmentType?: string;
+  season?: string;
   preBlockChestCm?: number;
   preBlockLengthCm?: number;
   preBlockSleeveCm?: number;
@@ -216,7 +219,10 @@ export interface CreateGarmentInput {
   photos?: string[];
 }
 
-export interface UpdateGarmentInput extends Partial<Omit<CreateGarmentInput, 'projectId'>> {}
+export interface UpdateGarmentInput extends Partial<Omit<CreateGarmentInput, 'projectId'>> {
+  garmentType?: string;
+  season?: string;
+}
 
 export interface CreateSampleInput {
   projectId: string;
