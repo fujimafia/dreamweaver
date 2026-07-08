@@ -4,6 +4,7 @@ import YarnView from './views/YarnView';
 import ProjectView from './views/ProjectView';
 import PatternView from './views/PatternView';
 import GarmentView from './views/GarmentView';
+import PlannerView from './views/PlannerView';
 import InspirationView from './views/InspirationView';
 
 export interface NavigateOpts {
@@ -33,6 +34,7 @@ export default function App() {
       case 'project': return <ProjectView initialProjectId={navOpts.projectId} onNavigate={navigate} />;
       case 'pattern': return <PatternView initialPatternId={navOpts.patternId} />;
       case 'garment':      return <GarmentView initialGarmentId={navOpts.garmentId} />;
+      case 'planner':      return <PlannerView />;
       case 'inspiration':  return <InspirationView />;
     }
   };
